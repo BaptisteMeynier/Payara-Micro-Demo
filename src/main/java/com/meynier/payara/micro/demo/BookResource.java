@@ -3,28 +3,28 @@ package com.meynier.payara.micro.demo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
-import javax.ws.rs.PathParam;
 
 /**
  * REST Web Service
  *
  */
 @Path("book")
+@ApplicationScoped
 public class BookResource {
 
     @Context
     private UriInfo context;
 
-    private Map<Integer, Book> library = new HashMap<>();
+    private Map<String, Book> library = new HashMap<>();
 
     /**
      * Get the value of library
@@ -55,9 +55,19 @@ public class BookResource {
      * @return an instance of java.lang.String
      */
     @GET
+    @Produces("application/json")
+    public Book[] getJson() {
+        return library.values().toArray(new Book[0]);
+    }
+
+    /**
+     * Retrieves representation of an instance of fish.payara.examples.rest.BookResource
+     * @return an instance of java.lang.String
+     */
+    @GET
     @Path("{isbn}")
     @Produces("application/json")
-    public JsonObject getJson(@PathParam("isbn") String isbn) {
+    public JsonObject getJsonByIsbn(@PathParam("isbn") String isbn) {
         return Json.createObjectBuilder().add(isbn, library.get(isbn).getTitle()).build();
     }
 
@@ -68,6 +78,8 @@ public class BookResource {
      */
     @PUT
     @Consumes("application/json")
-    public void putJson(String content) {
+    public void putJson(Book content) {
+        System.out.println(content.toJson());
+        library.put(UUID.randomUUID().toString(),content);
     }
 }

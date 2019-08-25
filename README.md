@@ -32,6 +32,8 @@ total 152M
 
 [baptiste@DESKTOP payara-micro-demo]$ java -jar target/payara-micro-demo.jar 
 ready in 8 770 (ms)
+
+curl -X PUT -H "Content-Type: application/json" -d '{"genre":"horror","author":"Jordan","title":"Murder in the kitchen"}' http://DESKTOP-FUI7H3K:8080/payara-micro-demo-1.0-SNAPSHOT/webresources/book
 ```
 ## Docker
 ```

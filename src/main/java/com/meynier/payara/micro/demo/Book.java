@@ -1,6 +1,17 @@
 package com.meynier.payara.micro.demo;
 
+import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbConfig;
+import javax.json.bind.config.PropertyVisibilityStrategy;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+
 public class Book {
+
+
+    public Book() {
+    }
 
     public Book(String author, String title, String genre) {
         this.genre = genre;
@@ -67,5 +78,22 @@ public class Book {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String toJson(){
+        JsonbConfig config = new JsonbConfig().withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
+            @Override
+            public boolean isVisible(Field field) {
+                return true;
+            }
+
+            @Override
+            public boolean isVisible(Method method) {
+                return false;
+            }
+        });
+        return JsonbBuilder.newBuilder().withConfig(config).build().toJson(this);
+    }
+
+
 
 }

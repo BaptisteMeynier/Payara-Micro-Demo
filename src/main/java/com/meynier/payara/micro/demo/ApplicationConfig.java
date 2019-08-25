@@ -2,6 +2,7 @@ package com.meynier.payara.micro.demo;
 
 
 import java.util.Set;
+import javax.json.bind.spi.JsonbProvider;
 import javax.ws.rs.core.Application;
 
 
